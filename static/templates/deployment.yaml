@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}--deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: static
+spec:
+  revisionHistoryLimit: 0
+  replicas: 1
+  selector:
+    matchLabels:
+      app: static
+  template:
+    metadata:
+      labels:
+        app: static
+    spec:
+      containers:
+        - name: static
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+          - containerPort: 8080
+          volumeMounts:
+            - name: statics-html-volume
+              mountPath: /var/www/app/dist/statics.html
+              subPath: statics.html
+
+            - name: default-volume
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+      volumes:
+        - name: statics-html-volume
+          configMap:
+            name: statics-html
+
+        - name: default-volume
+          configMap:
+            name: default-conf

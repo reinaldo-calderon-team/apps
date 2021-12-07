@@ -1,0 +1,6 @@
+image:
+  repository: gcr.io/google_containers/echoserver
+  tag: "1.4"
+service:
+  port: 8080
+environment: development 
