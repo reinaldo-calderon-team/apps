@@ -1,4 +1,4 @@
 image:
   repository: nginx
   tag: "stable-alpine"
-environment: development
+environment: staging
